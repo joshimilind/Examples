@@ -1,4 +1,4 @@
-n a normal, uncompressed text, each character is represented by the same number of bits (usually eight). In Huffman coding, each character can have a bit representation of a different length, depending on how common a character is: the characters that appear often in a text are represented by a shorter bit sequence than those being used more rarely. Every huffman code defines the specific bit sequences used to represent each character.
+In a normal, uncompressed text, each character is represented by the same number of bits (usually eight). In Huffman coding, each character can have a bit representation of a different length, depending on how common a character is: the characters that appear often in a text are represented by a shorter bit sequence than those being used more rarely. Every huffman code defines the specific bit sequences used to represent each character.
 A Huffman code can be represented by a binary tree whose leaves represent the characters that should be encoded. The code tree below can represent the characters A to H
 The leaf nodes have associated with them a weight which denotes the frequency of appearance of that character. In the example below, the character A has the highest weight 8, while F for example has weight 1.
 
@@ -56,3 +56,34 @@ def createCodeTree(chars: List[Char]): CodeTree = ...
    This tree is the optimal coding tree. The function until can be used in the following way:<br>
    until(singleton, combine)(trees) where the argument trees is of the type List[CodeTree].<br>
 6) Finally, use the functions defined above to implement the function createCodeTree which respects the signature shown above.<br>
+Decoding
+
+Define the function decode which decodes a list of bits (which were already encoded using a Huffman tree), given the corresponding coding tree.
+type Bit = Int
+def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ...
+<br>
+Use this function and the frenchCode code tree to decode the bit sequence in secret. Store the resulting character sequence in decodedSecret.
+Encoding
+
+This section deals with the Huffman encoding of a sequence of characters into a sequence of bits.
+…Using a Huffman Tree
+
+Define the function encode which encodes a list of characters using Huffman coding, given a code tree.
+<br>
+def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ...
+<br>
+Your implementation must traverse the coding tree for each character, a task that should be done using a helper function.
+…Using a Coding Table
+
+The previous function is simple, but very inefficient. You goal is now to define quickEncode which encodes an equivalent representation, but more efficiently.
+<br>
+def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ...
+<br>
+Your implementation will build a coding table once which, for each possible character, gives the list of bits of its code. The simplest way - but not the most efficient - is to encode the table of characters as a list of pairs.<br>
+type CodeTable = List[(Char, List[Bit])]<br>
+The encoding must then be done by accessing the table, via a functioncodeBits.<br>
+def codeBits(table: CodeTable)(char: Char): List[Bit] = ...
+<br>The creation of the table is defined by convert which traverses the coding tree and constructs the character table.<br>
+def convert(t: CodeTree): CodeTable = ...
+<br>Implement the function convert by using the function mergeCodeTablesbelow<br>
+def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = ...
